@@ -21,13 +21,21 @@ var game = new Phaser.Game(config);
 var platforms;
 var player;
 var coins;
+var goal;
 var cursors;
 
 var score = 0;
 var scoreText;
 
-var scoreGoal = 175;
+var scoreGoalMin = Phaser.Math.Between(100, 125);
+var scoreGoalMax = Phaser.Math.Between(125, 275);
 var scoreGoalText;
+
+var goldCoinCollect = 0;
+var silverCoinCollect = 0;
+var bronzeCoinCollect = 0;
+
+var finish = false;
 
 function preload() {
   this.load.image('background', './assets/images/Placeholder_background.jpeg');
@@ -46,7 +54,7 @@ function create() {
   scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
   //Displays the score goal
-  scoreGoalText = this.add.text(250, 16, 'Score Goal:' + scoreGoal, { fontSize: '32px', fill: '#000' });
+  scoreGoalText = this.add.text(250, 16, 'Score Goal:' + scoreGoalMin + ' - ' + scoreGoalMax, { fontSize: '32px', fill: '#000' });
 
   //Platforms
   platforms = this.physics.add.staticGroup();
@@ -56,6 +64,8 @@ function create() {
   platforms.create(350, 780, 'ground');
   platforms.create(600, 780, 'ground');
   platforms.create(850, 780, 'ground');
+  platforms.create(850, 650, 'ground');
+  platforms.create(1100, 650, 'ground');
   platforms.create(1100, 780, 'ground');
   platforms.create(1350, 780, 'ground');
   platforms.create(1600, 780, 'ground');
@@ -63,19 +73,24 @@ function create() {
 
   //Coins
   //Separated into three groups as each give different scores
+
+  //Small Coins
   smallCoins = this.physics.add.staticGroup();
 
   smallCoins.create(370, 747, 'smallCoin');
   smallCoins.create(621, 747, 'smallCoin');
   smallCoins.create(675, 747, 'smallCoin');
+  smallCoins.create(923, 614, 'smallCoin');
 
 
+  //Medium Coins
   midCoins = this.physics.add.staticGroup();
 
   midCoins.create(567, 745, 'midCoin');
   midCoins.create(903, 745, 'midCoin');
+  midCoins.create(850, 612, 'midCoin');
 
-
+  //Big Coins
   bigCoins = this.physics.add.staticGroup();
 
   bigCoins.create(250, 743, 'bigCoin');
@@ -107,6 +122,11 @@ function create() {
     repeat: -1
   });
 
+  //Goal
+  goal = this.physics.add.staticGroup();
+
+  goal.create(1600, 739, 'merchant');
+
   //Cursors
   cursors = this.input.keyboard.createCursorKeys();
 
@@ -115,6 +135,7 @@ function create() {
   this.physics.add.overlap(player, smallCoins, smallScore, null, this);
   this.physics.add.overlap(player, midCoins, midScore, null, this);
   this.physics.add.overlap(player, bigCoins, bigScore, null, this);
+  this.physics.add.overlap(player, goal, finishLevel, null, this);
 };
 
 function update() {
@@ -151,6 +172,7 @@ function smallScore(player, smallCoins) {
 
   score += 12;
   scoreText.setText('Score: ' + score);
+  bronzeCoinCollect += 1;
 
 };
 
@@ -159,6 +181,7 @@ function midScore(player, midCoins) {
 
   score += 25;
   scoreText.setText('Score: ' + score);
+  silverCoinCollect += 1;
 
 };
 
@@ -168,4 +191,21 @@ function bigScore(player, bigCoins) {
   score += 50;
   scoreText.setText('Score: ' + score);
 
+  goldCoinCollect += 1;
+
+};
+
+function finishLevel(player, goal) {
+  goal.disableBody(true, false);
+
+  if (score > scoreGoalMin && score < scoreGoalMax) {
+    this.physics.pause();
+
+    finish = true;
+
+    finishText = this.add.text(567, 180, 'Quite a bargain! \nGold Coins Collected: ' + goldCoinCollect +
+      '\nSilver Coins Collected:' + silverCoinCollect +
+      '\nBronze Coins Collected: ' + bronzeCoinCollect,
+      { fontSize: '50px', fill: '#000' });
+  }
 };
