@@ -27,6 +27,8 @@ var cursors;
 var score = 0;
 var scoreText;
 
+var music;
+
 var scoreGoalMin = Phaser.Math.Between(100, 125);
 var scoreGoalMax = Phaser.Math.Between(125, 275);
 var scoreGoalText;
@@ -38,16 +40,25 @@ var bronzeCoinCollect = 0;
 var finish = false;
 
 function preload() {
-  this.load.image('background', './assets/images/Placeholder_background.jpeg');
+  //Loads Gaphical Assets/sprites
+  this.load.image('background', './assets/images/fantasy_city.jpg');
   this.load.image('ground', './assets/images/Stone_Ground.PNG');
   this.load.image('bigCoin', './assets/images/Gold_Coin.PNG');
   this.load.image('midCoin', './assets/images/Silver_Coin.PNG');
   this.load.image('smallCoin', './assets/images/Bronze_Coin.PNG');
   this.load.image('merchant', './assets/images/Merchant.PNG');
   this.load.spritesheet('thief', './assets/images/Thief.PNG', { frameWidth: 32, frameHeight: 38 });
+
+  //Loads Audio
+  this.load.audio('collect', './assets/sounds/coin sound effect.mp3');
+  this.load.audio('goalSound', './assets/sounds/Coins falling sound effect.mp3');
+  this.load.audio('ambience', './assets/sounds/ambience/Small Crowd Talking Ambience.mp3')
 };
 
 function create() {
+  music = this.sound.add('ambience');
+  music.play();
+
   this.add.image(900, 290, 'background');
 
   //Displays the score the player has
@@ -167,12 +178,16 @@ function update() {
 //Medium coin = 25
 //Small coin = 12
 
+
 function smallScore(player, smallCoins) {
   smallCoins.disableBody(true, true);
 
   score += 12;
   scoreText.setText('Score: ' + score);
   bronzeCoinCollect += 1;
+
+  var collectSound = this.sound.add('collect');
+  collectSound.play();
 
 };
 
@@ -182,6 +197,9 @@ function midScore(player, midCoins) {
   score += 25;
   scoreText.setText('Score: ' + score);
   silverCoinCollect += 1;
+
+  var collectSound = this.sound.add('collect');
+  collectSound.play();
 
 };
 
@@ -193,12 +211,18 @@ function bigScore(player, bigCoins) {
 
   goldCoinCollect += 1;
 
+  var collectSound = this.sound.add('collect');
+  collectSound.play();
+
 };
 
 function finishLevel(player, goal) {
   goal.disableBody(true, false);
 
+  var goalSound = this.sound.add('goalSound');
+
   if (score > scoreGoalMin && score < scoreGoalMax) {
+    goalSound.play();
     this.physics.pause();
 
     finish = true;
