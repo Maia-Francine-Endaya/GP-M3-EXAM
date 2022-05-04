@@ -71,12 +71,18 @@ function create() {
   platforms = this.physics.add.staticGroup();
 
   //Places the platforms
+
+  platforms.create(190, 525, 'ground');
+  platforms.create(330, 525, 'ground');
+  platforms.create(430, 525, 'ground');
+  platforms.create(850, 650, 'ground');
+  platforms.create(1100, 650, 'ground');
+
+
   platforms.create(100, 780, 'ground');
   platforms.create(350, 780, 'ground');
   platforms.create(600, 780, 'ground');
   platforms.create(850, 780, 'ground');
-  platforms.create(850, 650, 'ground');
-  platforms.create(1100, 650, 'ground');
   platforms.create(1100, 780, 'ground');
   platforms.create(1350, 780, 'ground');
   platforms.create(1600, 780, 'ground');
@@ -92,6 +98,8 @@ function create() {
   smallCoins.create(621, 747, 'smallCoin');
   smallCoins.create(675, 747, 'smallCoin');
   smallCoins.create(923, 614, 'smallCoin');
+  smallCoins.create(370, 495, 'smallCoin');
+  smallCoins.create(460, 495, 'smallCoin');
 
 
   //Medium Coins
@@ -100,6 +108,7 @@ function create() {
   midCoins.create(567, 745, 'midCoin');
   midCoins.create(903, 745, 'midCoin');
   midCoins.create(850, 612, 'midCoin');
+  midCoins.create(220, 495, 'midCoin');
 
   //Big Coins
   bigCoins = this.physics.add.staticGroup();
@@ -141,7 +150,7 @@ function create() {
   //Cursors
   cursors = this.input.keyboard.createCursorKeys();
 
-  //Physics
+  //Physics and collisions
   this.physics.add.collider(player, platforms);
   this.physics.add.overlap(player, smallCoins, smallScore, null, this);
   this.physics.add.overlap(player, midCoins, midScore, null, this);
@@ -227,7 +236,7 @@ function finishLevel(player, goal) {
 
     finish = true;
 
-    finishText = this.add.text(567, 180, 'Quite a bargain! \nGold Coins Collected: ' + goldCoinCollect +
+    finishText = this.add.text(528, 290, 'Quite a bargain! \nGold Coins Collected: ' + goldCoinCollect +
       '\nSilver Coins Collected:' + silverCoinCollect +
       '\nBronze Coins Collected: ' + bronzeCoinCollect,
       { fontSize: '50px', fill: '#000' });
