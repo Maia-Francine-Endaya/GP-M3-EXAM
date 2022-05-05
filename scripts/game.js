@@ -1,6 +1,6 @@
 var config = {
   type: Phaser.AUTO,
-  width: 2000,
+  width: 1800,
   height: 800,
   physics: {
     default: 'arcade',
@@ -52,7 +52,8 @@ function preload() {
   //Loads Audio
   this.load.audio('collect', './assets/sounds/coin sound effect.mp3');
   this.load.audio('goalSound', './assets/sounds/Coins falling sound effect.mp3');
-  this.load.audio('ambience', './assets/sounds/ambience/Small Crowd Talking Ambience.mp3')
+  this.load.audio('ambience', './assets/sounds/ambience/Small Crowd Talking Ambience.mp3');
+  this.load.audio('alertSound', './assets/sounds/Whistle Sound Effect.mp3');
 };
 
 function create() {
@@ -71,6 +72,14 @@ function create() {
   platforms = this.physics.add.staticGroup();
 
   //Places the platforms
+
+  platforms.create(190, 325, 'ground');
+  platforms.create(330, 325, 'ground');
+  platforms.create(430, 325, 'ground');
+
+  platforms.create(850, 425, 'ground');
+  platforms.create(1400, 525, 'ground');
+  platforms.create(1100, 425, 'ground');
 
   platforms.create(190, 525, 'ground');
   platforms.create(330, 525, 'ground');
@@ -101,6 +110,9 @@ function create() {
   smallCoins.create(370, 495, 'smallCoin');
   smallCoins.create(460, 495, 'smallCoin');
 
+  smallCoins.create(460, 293, 'smallCoin');
+
+
 
   //Medium Coins
   midCoins = this.physics.add.staticGroup();
@@ -110,6 +122,9 @@ function create() {
   midCoins.create(850, 612, 'midCoin');
   midCoins.create(220, 495, 'midCoin');
 
+  midCoins.create(850, 395, 'midCoin');
+  midCoins.create(1134, 395, 'midCoin');
+
   //Big Coins
   bigCoins = this.physics.add.staticGroup();
 
@@ -117,7 +132,7 @@ function create() {
   bigCoins.create(812, 743, 'bigCoin');
 
   //Player
-  player = this.physics.add.sprite(100, 450, 'thief');
+  player = this.physics.add.sprite(100, 700, 'thief');
 
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
@@ -145,7 +160,7 @@ function create() {
   //Goal
   goal = this.physics.add.staticGroup();
 
-  goal.create(1600, 739, 'merchant');
+  goal.create(150, 285, 'merchant');
 
   //Cursors
   cursors = this.input.keyboard.createCursorKeys();
@@ -178,7 +193,6 @@ function update() {
   if (cursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-330);
   }
-
 };
 
 //Functions for adding score according to the coin collected
