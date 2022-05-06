@@ -112,6 +112,8 @@ function create() {
 
   smallCoins.create(460, 293, 'smallCoin');
 
+  smallCoins.create(1340, 495, 'smallCoin');
+
 
 
   //Medium Coins
@@ -125,11 +127,17 @@ function create() {
   midCoins.create(850, 395, 'midCoin');
   midCoins.create(1134, 395, 'midCoin');
 
+  midCoins.create(1450, 490, 'midCoin');
+
   //Big Coins
   bigCoins = this.physics.add.staticGroup();
 
   bigCoins.create(250, 743, 'bigCoin');
   bigCoins.create(812, 743, 'bigCoin');
+
+  bigCoins.create(985, 390, 'bigCoin');
+
+  bigCoins.create(1134, 612, 'bigCoin');
 
   //Player
   player = this.physics.add.sprite(100, 700, 'thief');
